@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // For SystemUiOverlayStyle
+import 'package:flutter/services.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,23 +40,29 @@ class _ChardsScreenState extends State<ChardsScreen> {
     {'name': 'Netflix', 'date': '15 Dec 2024', 'amount': '\$15,48'},
     {'name': 'Spotify', 'date': '14 Dec 2024', 'amount': '\$19,90'},
     {'name': 'Netflix', 'date': '12 Dec 2024', 'amount': '\$15,48'},
+    {'name': 'Netflix', 'date': '15 Dec 2024', 'amount': '\$15,48'},
+    {'name': 'Spotify', 'date': '14 Dec 2024', 'amount': '\$19,90'},
+    {'name': 'Netflix', 'date': '12 Dec 2024', 'amount': '\$15,48'},
+    {'name': 'Netflix', 'date': '15 Dec 2024', 'amount': '\$15,48'},
+    {'name': 'Spotify', 'date': '14 Dec 2024', 'amount': '\$19,90'},
+    {'name': 'Netflix', 'date': '12 Dec 2024', 'amount': '\$15,48'},
   ];
 
   final List<Map<String, dynamic>> _bankCardsData = [
     {
-      'color': Color(0xFFF472B6), // Pink card
+      'color': Color(0xFFF472B6),
       'accountType': "World",
       'cardNumber': "5413 7502 3412 2455",
       'cardDetailsLine': "Account card",
     },
     {
-      'color': Color(0xFF60A5FA), // Blue card
+      'color': Color(0xFF60A5FA),
       'accountType': "Business",
       'cardNumber': "4000 1234 5678 9010",
       'cardDetailsLine': "Company card",
     },
     {
-      'color': Color(0xFF34D399), // Green card
+      'color': Color(0xFF34D399),
       'accountType': "Savings",
       'cardNumber': "3782 822463 10005",
       'cardDetailsLine': "Personal account",
@@ -94,17 +100,18 @@ class _ChardsScreenState extends State<ChardsScreen> {
     bool isProminent = false,
   }) {
     return Container(
-      padding: EdgeInsets.fromLTRB(20, 18, 20, 18),
+      // MODIFIED PADDING: Reduced top/bottom padding from 18 to 7 (saves 11+11=22px)
+      padding: EdgeInsets.fromLTRB(20, 7, 20, 7),
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(18.0),
         boxShadow: isProminent
             ? [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.15), // Slightly more opaque shadow
-                  blurRadius: 18,                      // Increased blur
-                  spreadRadius: 1,                       // Small spread
-                  offset: Offset(0, 6),                // Adjusted offset for "below" feel
+                  color: Colors.black.withOpacity(0.15),
+                  blurRadius: 18,
+                  spreadRadius: 1,
+                  offset: Offset(0, 6),
                 ),
               ]
             : [],
@@ -126,17 +133,20 @@ class _ChardsScreenState extends State<ChardsScreen> {
               Container(
                 width: 48,
                 height: 32,
-                margin: EdgeInsets.only(top: 10.0, bottom: 12.0),
+                margin: EdgeInsets.only(bottom: 1.0), // Keep this from previous fix
                 decoration: BoxDecoration(
                   color: Color(0xFFFBBF24),
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),
+              // Added a small SizedBox for spacing if card number is too close to chip
+              // Adjust or remove if not needed after padding change.
+              SizedBox(height: 4),
               Text(
                 cardNumber,
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 19,
+                    fontSize: 19, // Consider reducing to 18 if problems persist and design allows
                     letterSpacing: 2.5,
                     fontFamily: 'monospace',
                     fontWeight: FontWeight.w500),
@@ -176,14 +186,14 @@ class _ChardsScreenState extends State<ChardsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true, // Allows body gradient to go behind AppBar
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.transparent, // Make AppBar transparent
+        backgroundColor: Colors.transparent,
         elevation: 0,
         systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent, // Make status bar transparent
-          statusBarIconBrightness: Brightness.dark, // Dark icons for light status bar
-          statusBarBrightness: Brightness.light, // For iOS consistency
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.light,
         ),
         leading: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -199,33 +209,32 @@ class _ChardsScreenState extends State<ChardsScreen> {
         actions: [
           IconButton(
             icon: Icon(Icons.help_outline, color: Color(0xFF4B5563), size: 26),
-            onPressed: () { /* Action for help */ },
+            onPressed: () {},
           ),
           SizedBox(width: 4),
         ],
       ),
       body: Container(
-        // This container provides the global gradient background
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color(0xFFFBCFE8), // Top color: A noticeable pink (like Tailwind Pink 200)
-              Color(0xFFFDF2F8), // Mid color: A very light pink (like Tailwind Pink 50)
-              Colors.white,      // Bottom color: Fades to white
+              Color(0xFFFBCFE8),
+              Color(0xFFFDF2F8),
+              Colors.white,
             ],
-            stops: [0.0, 0.35, 0.75], // Adjust stops for desired gradient spread
+            stops: [0.0, 0.35, 0.75],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
         ),
-        child: SafeArea( // Ensures content is not obscured by status bar/notches when AppBar is transparent
-          top: true, // Apply safe area to the top
-          bottom: false, // Bottom safe area is handled by Scaffold typically
+        child: SafeArea(
+          top: true,
+          bottom: false,
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 10), // Initial spacing below AppBar (adjust if needed with SafeArea)
+                SizedBox(height: 10),
                 SizedBox(
                   height: 220,
                   child: PageView.builder(
@@ -234,7 +243,7 @@ class _ChardsScreenState extends State<ChardsScreen> {
                     itemBuilder: (context, index) {
                       final cardData = _bankCardsData[index];
                       double scale = 1.0;
-                      
+
                       double difference = (_currentPage - index).abs();
                       const double nonProminentScale = 0.87;
                       if (difference > 0) {
@@ -257,7 +266,7 @@ class _ChardsScreenState extends State<ChardsScreen> {
                               accountType: cardData['accountType'],
                               cardNumber: cardData['cardNumber'],
                               cardDetailsLine: cardData['cardDetailsLine'],
-                              isProminent: (1.0 - scale) < 0.01, // More robust check for prominent
+                              isProminent: (1.0 - scale) < 0.01,
                             ),
                           ),
                         ),
@@ -276,7 +285,7 @@ class _ChardsScreenState extends State<ChardsScreen> {
                         style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold, color: Color(0xFF111827)),
                       ),
                       TextButton(
-                        onPressed: () { /* Action for "Open all" */ },
+                        onPressed: () {},
                         child: Text(
                           'Open all',
                           style: TextStyle(color: Color(0xFFF472B6), fontSize: 15, fontWeight: FontWeight.w500),
